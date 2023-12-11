@@ -1,2 +1,2 @@
 # To-Do List
- Simple To-Do LIst created using SvelteKit
+ Simple To-Do List created using SvelteKit
