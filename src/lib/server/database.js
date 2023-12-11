@@ -48,15 +48,7 @@ export function updateTodo(userid, todoid, description) {
 		throw new Error('Todo must have a description!')
 	}
 
-	const todos = db.get(userid);
-
-	// @ts-ignore
-	// if (todos.find((todo) => todo.id === userid)) {
-	// 	todos.push({
-	// 		id: crypto.randomUUID(),
-	// 		description
-	// 	});
-	// }
+	let todos = db.get(userid);
 
 	// @ts-ignore
 	const index = todos.findIndex((todo) => todo.id === todoid);

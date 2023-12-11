@@ -52,20 +52,21 @@
 		{#each data.todos.filter((todo) => !deleting.includes(todo.id)) as todo (todo.id)}
 			<li in:fly={{ y:20 }} out:slide>
 				<form bind:this={htmlForm} method="POST" action="?/delete" use:enhance={() => {
-					// deleting = [...deleting, todo.id];
-					// This is the callback function provided to use:enhance. 
-					// It’s an asynchronous function that waits for the update function to complete, 
-					// then removes the id of the current todo item from the deleting array. 
-					// This could be used to update the UI immediately after a deletion, without waiting for the server to validate anything
+
 					return async ({ update }) => {
 						await update();
-						// deleting = deleting.filter((id) => id !== todo.id);
 					};
 				}}>
 					<input type="hidden" name="id" value={todo.id} />
-					<input type="hidden" name="description" value={todo.description} />
-					<span contenteditable="true" on:blur={invokeUpdate}>{todo.description}</span>
-					<button aria-label="Mark as complete" />
+
+					<!-- Bind input value to todo.description which is binded to span's text -->
+					<input type="hidden" name="description" bind:value={todo.description} />
+
+					<!-- When span loses focus, invoke the "?/update" action -->
+					<span id="todoItem" contenteditable="true" on:blur={invokeUpdate} bind:innerHTML={todo.description}>{todo.description}</span>
+
+					<!-- Remove todo.id from deleting array upon click -->
+					<button aria-label="Mark as complete" on:click={() => deleting = deleting.filter((id) => id !== todo.id)}/>
 				</form>
 			</li>
 		{/each}
